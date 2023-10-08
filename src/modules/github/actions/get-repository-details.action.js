@@ -1,7 +1,7 @@
 export class GetRepositoryDetailsAction {
-    constructor({ githubService, scanRepositoryAction }) {
+    constructor({ githubService, scanRepositoryActionPool }) {
         this.githubService = githubService;
-        this.scanRepositoryAction = scanRepositoryAction;
+        this.scanRepositoryActionPool = scanRepositoryActionPool;
     }
 
     async exec(owner, repo, options = { scan: false }) {
@@ -12,7 +12,7 @@ export class GetRepositoryDetailsAction {
         let ymlContent = null;
 
         if (options.scan) {
-            const scanResult = await this.scanRepositoryAction.exec(owner, repo);
+            const scanResult = await this.scanRepositoryActionPool.push(owner, repo);
             totalFiles = scanResult.totalFiles;
             ymlContent = scanResult.ymlContent;
         }
